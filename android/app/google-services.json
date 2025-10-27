@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "347343392183",
+    "project_id": "test-firebase-mcp-flutter",
+    "storage_bucket": "test-firebase-mcp-flutter.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347343392183:android:02cee1f01cdcd28e65ac32",
+        "android_client_info": {
+          "package_name": "com.example.test_firebase_mcp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2tH4IQoVtLYFanAr6Pcyw8R5fryWYKsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
