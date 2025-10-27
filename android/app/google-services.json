@@ -23,6 +23,25 @@
           "other_platform_oauth_client": []
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347343392183:android:3035d2187f5c390f65ac32",
+        "android_client_info": {
+          "package_name": "io.github.kihyun1998.test_firebase_mcp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2tH4IQoVtLYFanAr6Pcyw8R5fryWYKsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
     }
   ],
   "configuration_version": "1"
