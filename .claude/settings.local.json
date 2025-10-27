@@ -5,5 +5,9 @@
     ],
     "deny": [],
     "ask": []
-  }
+  },
+  "enabledMcpjsonServers": [
+    "firebase"
+  ],
+  "enableAllProjectMcpServers": true
 }
