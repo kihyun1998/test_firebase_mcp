@@ -52,6 +52,41 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     );
   }
 
+  Future<void> _handleGoogleSignIn() async {
+    print('🟢 _handleGoogleSignIn 시작');
+    final authController = ref.read(authControllerProvider.notifier);
+    await authController.signInWithGoogle();
+
+    if (!mounted) return;
+
+    final authState = ref.read(authControllerProvider);
+    authState.when(
+      data: (_) {
+        print('✅ Google 로그인 성공');
+        // 로그인 성공 - authStateChanges가 자동으로 화면 전환
+      },
+      loading: () {
+        print('⏳ Google 로그인 로딩 중...');
+      },
+      error: (error, stackTrace) {
+        print('❌ Google 로그인 에러 (UI): $error');
+        print('❌ StackTrace: $stackTrace');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(error.toString()),
+            backgroundColor: Colors.red,
+            duration: const Duration(seconds: 5),
+            action: SnackBarAction(
+              label: '확인',
+              textColor: Colors.white,
+              onPressed: () {},
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authControllerProvider);
@@ -142,6 +177,44 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             child: CircularProgressIndicator(strokeWidth: 2),
                           )
                         : const Text('로그인', style: TextStyle(fontSize: 16)),
+                  ),
+                  const SizedBox(height: 24),
+                  Row(
+                    children: [
+                      Expanded(child: Divider(color: Colors.grey[400])),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Text(
+                          '또는',
+                          style: TextStyle(color: Colors.grey[600]),
+                        ),
+                      ),
+                      Expanded(child: Divider(color: Colors.grey[400])),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  OutlinedButton.icon(
+                    onPressed: isLoading ? null : _handleGoogleSignIn,
+                    style: OutlinedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      side: BorderSide(color: Colors.grey[300]!),
+                      backgroundColor: Colors.white,
+                    ),
+                    icon: Container(
+                      padding: const EdgeInsets.all(2),
+                      child: Image.network(
+                        'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/480px-Google_%22G%22_logo.svg.png',
+                        height: 24,
+                        width: 24,
+                        errorBuilder: (context, error, stackTrace) {
+                          return const Icon(Icons.g_mobiledata, size: 24);
+                        },
+                      ),
+                    ),
+                    label: const Text(
+                      'Google로 로그인',
+                      style: TextStyle(fontSize: 16, color: Colors.black87),
+                    ),
                   ),
                   const SizedBox(height: 16),
                   TextButton(

@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "347343392183-m2u60q7jo3hh8is3igpajmrn455n8gag.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.test_firebase_mcp",
+            "certificate_hash": "dbcd71ae2583b8aa1e4995d91f9858a7c68f5690"
+          }
+        },
+        {
           "client_id": "347343392183-oavf1kr6l05re7t9torkphs2fpehcuh2.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -49,6 +57,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "347343392183-59bbrjedsv31kc7hsuh0ogf8nla5htod.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.kihyun1998.test_firebase_mcp",
+            "certificate_hash": "dbcd71ae2583b8aa1e4995d91f9858a7c68f5690"
+          }
+        },
         {
           "client_id": "347343392183-oavf1kr6l05re7t9torkphs2fpehcuh2.apps.googleusercontent.com",
           "client_type": 3

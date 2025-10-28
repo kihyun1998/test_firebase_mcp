@@ -61,6 +61,18 @@ class AuthController extends _$AuthController {
     });
   }
 
+  // Google 로그인
+  Future<void> signInWithGoogle() async {
+    print('🟡 AuthController: Google 로그인 시작');
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final authService = ref.read(authServiceProvider);
+      final result = await authService.signInWithGoogle();
+      print('🟡 AuthController: signInWithGoogle 결과 = $result');
+    });
+    print('🟡 AuthController: 최종 state = ${state.hasError ? "에러: ${state.error}" : "성공"}');
+  }
+
   // 로그아웃
   Future<void> signOut() async {
     state = const AsyncLoading();

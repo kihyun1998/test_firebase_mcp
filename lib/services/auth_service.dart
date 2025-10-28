@@ -1,8 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import '../models/user_model.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
 
   // 현재 사용자 스트림
   Stream<User?> get authStateChanges => _auth.authStateChanges();
@@ -61,10 +63,62 @@ class AuthService {
     }
   }
 
+  // Google 로그인
+  Future<UserModel?> signInWithGoogle() async {
+    try {
+      print('🔵 Google 로그인 시작...');
+
+      // Google 로그인 시작
+      final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+      print('🔵 GoogleSignInAccount: ${googleUser?.email}');
+
+      if (googleUser == null) {
+        // 사용자가 로그인을 취소함
+        print('⚠️ 사용자가 Google 로그인을 취소했습니다');
+        return null;
+      }
+
+      // Google 인증 정보 가져오기
+      print('🔵 Google 인증 정보 가져오는 중...');
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
+      print('🔵 AccessToken: ${googleAuth.accessToken != null ? "존재함" : "null"}');
+      print('🔵 IdToken: ${googleAuth.idToken != null ? "존재함" : "null"}');
+
+      // Firebase 인증 자격 증명 생성
+      print('🔵 Firebase 인증 자격 증명 생성 중...');
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken,
+        idToken: googleAuth.idToken,
+      );
+
+      // Firebase에 로그인
+      print('🔵 Firebase 로그인 시도 중...');
+      final userCredential = await _auth.signInWithCredential(credential);
+      print('✅ Firebase 로그인 성공: ${userCredential.user?.email}');
+
+      if (userCredential.user != null) {
+        return UserModel.fromFirebaseUser(userCredential.user!);
+      }
+      return null;
+    } on FirebaseAuthException catch (e) {
+      print('❌ FirebaseAuthException: ${e.code}');
+      print('❌ Message: ${e.message}');
+      print('❌ StackTrace: ${e.stackTrace}');
+      throw _handleAuthException(e);
+    } catch (e, stackTrace) {
+      print('❌ Google 로그인 에러: $e');
+      print('❌ StackTrace: $stackTrace');
+      throw 'Google 로그인 중 오류가 발생했습니다: $e';
+    }
+  }
+
   // 로그아웃
   Future<void> signOut() async {
     try {
-      await _auth.signOut();
+      await Future.wait([
+        _auth.signOut(),
+        _googleSignIn.signOut(),
+      ]);
     } catch (e) {
       throw '로그아웃 중 오류가 발생했습니다: $e';
     }
