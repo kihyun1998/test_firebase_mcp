@@ -1,5 +1,9 @@
 # Firebase MCP를 사용한 Flutter 로그인 및 푸시 알림 구현 프로젝트
 
+## 🚀 현재 진행률: 약 70%
+✅ **완료:** 로그인 기능 (이메일/비밀번호) + Firebase 연동
+⏳ **진행 중:** 푸시 알림 기능 (FCM)
+
 ## 프로젝트 개요
 Flutter 모바일 앱에서 Firebase MCP를 활용하여 로그인 기능과 푸시 알림 기능을 구현하는 예제 프로젝트입니다.
 
@@ -47,55 +51,55 @@ Flutter 모바일 앱에서 Firebase MCP를 활용하여 로그인 기능과 푸
 
 ## 다음 단계 (MCP 서버 연결 후 진행할 작업)
 
-### 4. Firebase 프로젝트 생성 및 설정
-- [ ] Firebase MCP를 통해 Firebase Console에서 프로젝트 생성
-- [ ] Android 앱 등록 (패키지명: `com.example.test_firebase_mcp`)
-- [ ] iOS 앱 등록 (Bundle ID 설정)
-- [ ] `google-services.json` 다운로드 및 `android/app/` 경로에 배치
-- [ ] `GoogleService-Info.plist` 다운로드 및 `ios/Runner/` 경로에 배치
-- [ ] Firebase Authentication 활성화 (이메일/비밀번호 로그인)
+### 4. ✅ Firebase 프로젝트 생성 및 설정
+- [x] Firebase MCP를 통해 Firebase Console에서 프로젝트 생성
+- [x] Android 앱 등록 (패키지명: `com.example.test_firebase_mcp`)
+- [x] iOS 앱 등록 (Bundle ID 설정)
+- [x] `google-services.json` 다운로드 및 `android/app/` 경로에 배치
+- [x] `GoogleService-Info.plist` 다운로드 및 `ios/Runner/` 경로에 배치
+- [x] Firebase Authentication 활성화 (이메일/비밀번호 로그인)
 - [ ] Firebase Cloud Messaging 활성화
 
-### 5. Firebase 초기화 코드 작성
-- [ ] `lib/main.dart` 수정
+### 5. ✅ Firebase 초기화 코드 작성
+- [x] `lib/main.dart` 수정
   - Firebase 초기화 (`Firebase.initializeApp()`)
   - ProviderScope로 앱 감싸기
   - 기본 앱 구조 설정
 
-### 6. 프로젝트 구조 설계
+### 6. ✅ 프로젝트 구조 설계
 ```
 lib/
-├── main.dart
+├── main.dart ✅
 ├── providers/
-│   ├── auth_provider.dart (riverpod generator 사용)
-│   └── fcm_provider.dart (riverpod generator 사용)
+│   ├── auth_service_provider.dart ✅ (riverpod generator 사용)
+│   └── fcm_provider.dart (미완성)
 ├── models/
-│   └── user_model.dart
+│   └── user_model.dart ✅
 ├── services/
-│   ├── auth_service.dart
-│   └── fcm_service.dart
+│   ├── auth_service.dart ✅
+│   └── fcm_service.dart (미완성)
 └── screens/
-    ├── login_screen.dart
-    ├── home_screen.dart
-    └── register_screen.dart
+    ├── login_screen.dart ✅
+    ├── home_screen.dart ✅
+    └── register_screen.dart ✅
 ```
 
-### 7. 로그인 기능 구현 (이메일/비밀번호)
-- [ ] `AuthService` 클래스 작성
+### 7. ✅ 로그인 기능 구현 (이메일/비밀번호)
+- [x] `AuthService` 클래스 작성
   - 이메일/비밀번호 로그인
   - 회원가입
   - 로그아웃
   - 인증 상태 스트림
-- [ ] `AuthProvider` 작성 (riverpod_generator 사용)
+- [x] `AuthProvider` 작성 (riverpod_generator 사용)
   - 현재 사용자 상태 관리
   - 로그인/로그아웃 액션
-- [ ] `LoginScreen` UI 작성
+- [x] `LoginScreen` UI 작성
   - 이메일/비밀번호 입력 폼
   - 로그인 버튼
   - 회원가입 화면 이동 버튼
-- [ ] `RegisterScreen` UI 작성
+- [x] `RegisterScreen` UI 작성
   - 회원가입 폼
-- [ ] `HomeScreen` 작성
+- [x] `HomeScreen` 작성
   - 로그인 후 표시될 화면
   - 사용자 정보 표시
   - 로그아웃 버튼
@@ -120,9 +124,9 @@ lib/
   - Firebase Console에서 테스트 메시지 전송
   - 앱에서 수신 확인
 
-### 9. 코드 생성 및 테스트
-- [ ] `dart run build_runner build --delete-conflicting-outputs` 실행
-- [ ] 로그인/로그아웃 테스트
+### 9. ⚠️ 코드 생성 및 테스트 (부분 완료)
+- [x] `dart run build_runner build --delete-conflicting-outputs` 실행
+- [x] 로그인/로그아웃 테스트 (커밋: "로그인 성공")
 - [ ] 푸시 알림 수신 테스트 (Foreground/Background)
 
 ### 10. 추가 개선 사항 (선택)
