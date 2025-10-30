@@ -1,12 +1,17 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 
+import 'local_notification_service.dart';
+
 class FCMService {
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
 
   // FCM 초기화 및 권한 요청
   Future<void> initialize() async {
     try {
+      // 로컬 알림 서비스 초기화
+      await LocalNotificationService().initialize();
+
       // 알림 권한 요청
       await requestPermission();
 
@@ -112,7 +117,16 @@ class FCMService {
     debugPrint('내용: ${message.notification?.body}');
     debugPrint('데이터: ${message.data}');
 
-    // TODO: 로컬 알림 표시 또는 UI 업데이트
+    // 로컬 알림 표시
+    if (message.notification != null) {
+      LocalNotificationService().showNotification(
+        title: message.notification!.title ?? '알림',
+        body: message.notification!.body ?? '',
+        imageUrl: message.notification?.android?.imageUrl ??
+            message.notification?.apple?.imageUrl,
+        data: message.data.isNotEmpty ? message.data : null,
+      );
+    }
   }
 
   // 알림 클릭 시 처리
