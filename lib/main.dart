@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'models/notification_model.dart';
@@ -26,6 +27,15 @@ void main() async {
 
   // 백그라운드 메시지 핸들러 등록
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
+  // Naver Map 초기화
+  // TODO: 'YOUR_CLIENT_ID_HERE'를 Naver Cloud Platform에서 발급받은 Client ID로 교체하세요
+  await FlutterNaverMap().init(
+    clientId: 'tn4hbzrm1m',
+    onAuthFailed: (ex) {
+      debugPrint('네이버 지도 인증 실패: $ex');
+    },
+  );
 
   runApp(const ProviderScope(child: MyApp()));
 }
@@ -74,7 +84,7 @@ class AuthGate extends ConsumerWidget {
         // 스낵바로 알림 표시
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('${message.notification?.title ?? "알림"}'),
+            content: Text(message.notification?.title ?? "알림"),
             duration: const Duration(seconds: 3),
             action: SnackBarAction(
               label: '보기',

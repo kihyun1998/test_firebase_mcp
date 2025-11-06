@@ -48,6 +48,11 @@
 	<!-- 알림 권한 설명 -->
 	<key>NSUserNotificationUsageDescription</key>
 	<string>앱에서 중요한 알림을 받기 위해 알림 권한이 필요합니다.</string>
+	<!-- 위치 권한 설명 (네이버 지도) -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>지도에서 현재 위치를 표시하기 위해 위치 권한이 필요합니다.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>지도 서비스를 위해 위치 권한이 필요합니다.</string>
 	<!-- Background Modes -->
 	<key>UIBackgroundModes</key>
 	<array>

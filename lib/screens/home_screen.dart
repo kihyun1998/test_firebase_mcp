@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/auth_service_provider.dart';
 import '../providers/fcm_provider.dart';
 import '../providers/notifications_provider.dart';
+import 'map_screen.dart';
 import 'notifications_screen.dart';
 
 class HomeScreen extends ConsumerWidget {
@@ -166,12 +167,14 @@ class HomeScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      const Row(
                         children: [
-                          const Icon(Icons.notifications_active,
-                              color: Colors.orange),
-                          const SizedBox(width: 8),
-                          const Text(
+                          Icon(
+                            Icons.notifications_active,
+                            color: Colors.orange,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
                             'FCM 푸시 알림 토큰',
                             style: TextStyle(
                               fontSize: 18,
@@ -243,7 +246,10 @@ class HomeScreen extends ConsumerWidget {
                         ),
                         error: (error, stack) => Text(
                           'FCM 토큰 로드 오류: $error',
-                          style: const TextStyle(color: Colors.red, fontSize: 12),
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -268,6 +274,25 @@ class HomeScreen extends ConsumerWidget {
                   color: Colors.green,
                 ),
                 textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              // 지도 버튼
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => const MapScreen()),
+                  );
+                },
+                icon: const Icon(Icons.map),
+                label: const Text('지도 보기'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 32,
+                    vertical: 16,
+                  ),
+                ),
               ),
               const SizedBox(height: 16),
               if (authState.isLoading)
