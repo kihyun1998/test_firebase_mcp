@@ -35,6 +35,13 @@ UserModel? currentUser(Ref ref) {
   );
 }
 
+// Google Access Token Provider
+@Riverpod(dependencies: [authService])
+String? accessToken(Ref ref) {
+  final authService = ref.watch(authServiceProvider);
+  return authService.accessToken;
+}
+
 // 로그인 액션을 위한 Notifier
 @Riverpod(dependencies: [authService])
 class AuthController extends _$AuthController {
@@ -117,6 +124,33 @@ class IdTokenController extends _$IdTokenController {
 
       // idTokenProvider를 무효화하여 새로 가져오도록 함
       ref.invalidate(idTokenProvider);
+
+      return token;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return null;
+    }
+  }
+}
+
+// Access Token 갱신을 위한 Controller
+@Riverpod(dependencies: [authService])
+class AccessTokenController extends _$AccessTokenController {
+  @override
+  FutureOr<void> build() {
+    // 초기 상태
+  }
+
+  // Access Token 갱신
+  Future<String?> refreshAccessToken() async {
+    state = const AsyncLoading();
+    try {
+      final authService = ref.read(authServiceProvider);
+      final token = await authService.refreshAccessToken();
+      state = const AsyncData(null);
+
+      // accessTokenProvider를 무효화하여 새로 가져오도록 함
+      ref.invalidate(accessTokenProvider);
 
       return token;
     } catch (e) {

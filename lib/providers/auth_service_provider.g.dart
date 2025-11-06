@@ -63,6 +63,26 @@ final currentUserProvider = AutoDisposeProvider<UserModel?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserRef = AutoDisposeProviderRef<UserModel?>;
+String _$accessTokenHash() => r'93f9b0059376e2e90e6bfd911ed795300cfa16c8';
+
+/// See also [accessToken].
+@ProviderFor(accessToken)
+final accessTokenProvider = AutoDisposeProvider<String?>.internal(
+  accessToken,
+  name: r'accessTokenProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$accessTokenHash,
+  dependencies: <ProviderOrFamily>[authServiceProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    authServiceProvider,
+    ...?authServiceProvider.allTransitiveDependencies,
+  },
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef AccessTokenRef = AutoDisposeProviderRef<String?>;
 String _$idTokenHash() => r'1233adb6af923ff6b556bfa752b3410541f1b786';
 
 /// See also [idToken].
@@ -121,5 +141,25 @@ final idTokenControllerProvider =
     );
 
 typedef _$IdTokenController = AutoDisposeAsyncNotifier<void>;
+String _$accessTokenControllerHash() =>
+    r'b8fe5870001eca86fccb11d725c5bfca385a741f';
+
+/// See also [AccessTokenController].
+@ProviderFor(AccessTokenController)
+final accessTokenControllerProvider =
+    AutoDisposeAsyncNotifierProvider<AccessTokenController, void>.internal(
+      AccessTokenController.new,
+      name: r'accessTokenControllerProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$accessTokenControllerHash,
+      dependencies: <ProviderOrFamily>[authServiceProvider],
+      allTransitiveDependencies: <ProviderOrFamily>{
+        authServiceProvider,
+        ...?authServiceProvider.allTransitiveDependencies,
+      },
+    );
+
+typedef _$AccessTokenController = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

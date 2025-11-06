@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "io.github.kihyun1998.test_firebase_mcp"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 36
     ndkVersion = "27.0.12077973"
 
     compileOptions {
