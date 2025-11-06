@@ -91,3 +91,37 @@ class AuthController extends _$AuthController {
     });
   }
 }
+
+// ID Token Provider
+@Riverpod(dependencies: [authService])
+Future<String?> idToken(Ref ref) async {
+  final authService = ref.watch(authServiceProvider);
+  return await authService.getIDToken();
+}
+
+// ID Token 갱신을 위한 Controller
+@Riverpod(dependencies: [authService])
+class IdTokenController extends _$IdTokenController {
+  @override
+  FutureOr<void> build() {
+    // 초기 상태
+  }
+
+  // ID Token 갱신
+  Future<String?> refreshIDToken() async {
+    state = const AsyncLoading();
+    try {
+      final authService = ref.read(authServiceProvider);
+      final token = await authService.getIDToken(forceRefresh: true);
+      state = const AsyncData(null);
+
+      // idTokenProvider를 무효화하여 새로 가져오도록 함
+      ref.invalidate(idTokenProvider);
+
+      return token;
+    } catch (e) {
+      state = AsyncError(e, StackTrace.current);
+      return null;
+    }
+  }
+}

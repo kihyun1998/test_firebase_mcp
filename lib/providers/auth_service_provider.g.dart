@@ -63,6 +63,26 @@ final currentUserProvider = AutoDisposeProvider<UserModel?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef CurrentUserRef = AutoDisposeProviderRef<UserModel?>;
+String _$idTokenHash() => r'1233adb6af923ff6b556bfa752b3410541f1b786';
+
+/// See also [idToken].
+@ProviderFor(idToken)
+final idTokenProvider = AutoDisposeFutureProvider<String?>.internal(
+  idToken,
+  name: r'idTokenProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$idTokenHash,
+  dependencies: <ProviderOrFamily>[authServiceProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    authServiceProvider,
+    ...?authServiceProvider.allTransitiveDependencies,
+  },
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef IdTokenRef = AutoDisposeFutureProviderRef<String?>;
 String _$authControllerHash() => r'e9596df7ed3dc977b0613a05c19280edb4b1242d';
 
 /// See also [AuthController].
@@ -82,5 +102,24 @@ final authControllerProvider =
     );
 
 typedef _$AuthController = AutoDisposeAsyncNotifier<void>;
+String _$idTokenControllerHash() => r'97bed116866cd5cff96ea959c7b456d23fa28ae8';
+
+/// See also [IdTokenController].
+@ProviderFor(IdTokenController)
+final idTokenControllerProvider =
+    AutoDisposeAsyncNotifierProvider<IdTokenController, void>.internal(
+      IdTokenController.new,
+      name: r'idTokenControllerProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$idTokenControllerHash,
+      dependencies: <ProviderOrFamily>[authServiceProvider],
+      allTransitiveDependencies: <ProviderOrFamily>{
+        authServiceProvider,
+        ...?authServiceProvider.allTransitiveDependencies,
+      },
+    );
+
+typedef _$IdTokenController = AutoDisposeAsyncNotifier<void>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

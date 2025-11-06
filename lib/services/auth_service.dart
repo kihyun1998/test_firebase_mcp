@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
 import '../models/user_model.dart';
 
 class AuthService {
@@ -17,6 +18,20 @@ class AuthService {
     final user = currentUser;
     if (user == null) return null;
     return UserModel.fromFirebaseUser(user);
+  }
+
+  // ID Token 가져오기
+  Future<String?> getIDToken({bool forceRefresh = false}) async {
+    try {
+      final user = currentUser;
+      if (user == null) return null;
+
+      // forceRefresh가 true면 갱신, false면 캐시된 토큰 반환
+      final idToken = await user.getIdToken(forceRefresh);
+      return idToken;
+    } catch (e) {
+      throw 'ID Token을 가져올 수 없습니다: $e';
+    }
   }
 
   // 이메일/비밀번호 회원가입
@@ -80,8 +95,11 @@ class AuthService {
 
       // Google 인증 정보 가져오기
       print('🔵 Google 인증 정보 가져오는 중...');
-      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-      print('🔵 AccessToken: ${googleAuth.accessToken != null ? "존재함" : "null"}');
+      final GoogleSignInAuthentication googleAuth =
+          await googleUser.authentication;
+      print(
+        '🔵 AccessToken: ${googleAuth.accessToken != null ? "존재함" : "null"}',
+      );
       print('🔵 IdToken: ${googleAuth.idToken != null ? "존재함" : "null"}');
 
       // Firebase 인증 자격 증명 생성
@@ -115,10 +133,7 @@ class AuthService {
   // 로그아웃
   Future<void> signOut() async {
     try {
-      await Future.wait([
-        _auth.signOut(),
-        _googleSignIn.signOut(),
-      ]);
+      await Future.wait([_auth.signOut(), _googleSignIn.signOut()]);
     } catch (e) {
       throw '로그아웃 중 오류가 발생했습니다: $e';
     }

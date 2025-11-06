@@ -18,6 +18,8 @@ class HomeScreen extends ConsumerWidget {
     final authState = ref.watch(authControllerProvider);
     final fcmTokenAsync = ref.watch(fcmTokenProvider);
     final unreadCount = ref.watch(unreadNotificationsCountProvider);
+    final idTokenAsync = ref.watch(idTokenProvider);
+    final idTokenController = ref.read(idTokenControllerProvider.notifier);
 
     return Scaffold(
       appBar: AppBar(
@@ -255,6 +257,136 @@ class HomeScreen extends ConsumerWidget {
                       const SizedBox(height: 12),
                       const Text(
                         'ℹ️ 이 토큰을 사용하여 Firebase Console에서 테스트 알림을 전송할 수 있습니다.',
+                        style: TextStyle(
+                          fontSize: 11,
+                          color: Colors.grey,
+                          fontStyle: FontStyle.italic,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              // ID Token 카드
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Row(
+                        children: [
+                          Icon(
+                            Icons.security,
+                            color: Colors.blue,
+                          ),
+                          SizedBox(width: 8),
+                          Text(
+                            'Firebase Auth ID Token',
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Divider(height: 24),
+                      idTokenAsync.when(
+                        data: (token) {
+                          if (token == null) {
+                            return const Text(
+                              'ID Token을 가져올 수 없습니다.',
+                              style: TextStyle(color: Colors.red),
+                            );
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text(
+                                '토큰:',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              Container(
+                                padding: const EdgeInsets.all(12),
+                                decoration: BoxDecoration(
+                                  color: Colors.grey[100],
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: SelectableText(
+                                  token,
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontFamily: 'monospace',
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              Row(
+                                children: [
+                                  ElevatedButton.icon(
+                                    onPressed: () {
+                                      Clipboard.setData(ClipboardData(text: token));
+                                      ScaffoldMessenger.of(context).showSnackBar(
+                                        const SnackBar(
+                                          content: Text('ID Token이 클립보드에 복사되었습니다!'),
+                                          duration: Duration(seconds: 2),
+                                        ),
+                                      );
+                                    },
+                                    icon: const Icon(Icons.copy, size: 18),
+                                    label: const Text('토큰 복사'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.blue,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  ElevatedButton.icon(
+                                    onPressed: () async {
+                                      final refreshedToken = await idTokenController.refreshIDToken();
+                                      if (refreshedToken != null && context.mounted) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('ID Token이 갱신되었습니다!'),
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                      }
+                                    },
+                                    icon: const Icon(Icons.refresh, size: 18),
+                                    label: const Text('갱신'),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.green,
+                                      foregroundColor: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          );
+                        },
+                        loading: () => const Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        ),
+                        error: (error, stack) => Text(
+                          'ID Token 로드 오류: $error',
+                          style: const TextStyle(
+                            color: Colors.red,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      const Text(
+                        'ℹ️ 이 토큰은 Firebase Security Rules 검증 및 백엔드 API 호출 시 사용됩니다.',
                         style: TextStyle(
                           fontSize: 11,
                           color: Colors.grey,
