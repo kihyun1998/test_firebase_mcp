@@ -177,13 +177,13 @@ class AuthService {
 
       print('🔵 Access Token 갱신 중...');
       final scopes = <String>['email'];
+
       final authorization = await _googleSignInAccount!.authorizationClient
           .authorizationForScopes(scopes);
 
       if (authorization == null) {
         print('🔵 권한이 없어서 사용자에게 재요청...');
-        final newAuthorization = await _googleSignInAccount!
-            .authorizationClient
+        final newAuthorization = await _googleSignInAccount!.authorizationClient
             .authorizeScopes(scopes);
         _accessToken = newAuthorization.accessToken;
         print('✅ Access Token 갱신 완료: ${_accessToken != null ? "존재함" : "null"}');
