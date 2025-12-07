@@ -153,7 +153,7 @@ class AuthService {
       print('❌ Description: ${e.description}');
       if (e.code == GoogleSignInExceptionCode.canceled) {
         print('⚠️ 사용자가 Google 로그인을 취소했습니다');
-        return null; // 사용자 취소는 null 반환
+        throw 'Google 로그인이 취소되었습니다.';
       }
       throw 'Google 로그인 오류: ${e.description}';
     } on FirebaseAuthException catch (e) {
